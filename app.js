@@ -1,66 +1,29 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const graphqlHttp = require('express-graphql');
-const { buildSchema } = require('graphql');
-
+const mongoose = require('mongoose');
+const graphQlSchema = require('./graphql/schema');
+const graphQlResolvers = require('./graphql/resolvers');
 const app = express();
 const PORT = 8080;
-
-const events = [];
 
 app.use(bodyParser.json());
 
 app.use(
   '/graphql',
   graphqlHttp({
-    schema: buildSchema(`
-        type Event {
-          _id: ID!
-          title: String!
-          description: String!
-          price: Float!
-          date: String!
-        }
-
-        input EventInput {
-          title: String!
-          description: String!
-          price: Float!
-          date: String!
-        }
-
-        type RootQuery {
-            events: [Event!]!
-        }
-
-        type RootMutation {
-            createEvent(eventInput: EventInput): Event
-        }
-
-        schema {
-            query: RootQuery
-            mutation: RootMutation
-        }
-    `),
-    rootValue: {
-      events: () => {
-        return events;
-      },
-      createEvent: (args) => {
-        const { title, description, price, date } = args.eventInput;
-        const event = {
-          _id: Math.random().toString(),
-          title,
-          description,
-          price: +price,
-          date,
-        };
-        events.push(event);
-        return event;
-      },
-    },
+    schema: graphQlSchema,
+    rootValue: graphQlResolvers,
     graphiql: true,
   })
 );
+
+mongoose
+  .connect(
+    `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.x62ms.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`,
+    { useNewUrlParser: true, useUnifiedTopology: true }
+  )
+  .then(() => console.log('Connected to MongoDB'))
+  .catch((error) => console.log('DB Error : ', error));
 
 app.listen(PORT, () => console.log(`App is running at http://localhost:${PORT}/graphql`));
