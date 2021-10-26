@@ -1,0 +1,111 @@
+# mutation {
+#   createEvent(eventInput: {title: "title 17", description: "description 17", price: 9000, date: "2021-10-25T07:57:54.607Z"}) {
+#     title
+#     description
+#     date
+#     price 
+#     creator{
+#       _id
+#       email
+#     }
+#   }
+# }
+
+# mutation {
+#   deleteEvents(deletedEventIds:["6176975429677a5fbd15f53d", "6176972529677a5fbd15f538"]) 
+# }
+
+
+mutation {
+  deleteEvent(deletedEventId:"61768ce5f1e01b2339bc787b") 
+}
+
+
+# query{
+#   events{
+#     _id
+#     title
+#   }
+# }
+
+# query{
+#   events{
+#     _id
+#     title
+#     description
+#     date
+#     price
+#   creator {
+#       _id
+#     email
+#     createdEvents{
+#       title
+#       description
+#       date
+#       price
+#     }
+#     }
+#   }
+# }
+
+
+# mutation {
+#   createUser(userInput: {email: "usman@gmail.com", password: "123456"}) {
+#     email
+#     password
+#   }
+# }
+
+
+# mutation {
+#   bookEvent(eventId:"61768b37079ae59dc0b3279c") {
+#  		_id
+#     createdAt
+#     user{
+#       email
+#     }
+#     event{
+#       title
+#       description
+#     }
+#   }
+# }
+
+
+# mutation {
+#   cancleBooking(bookingId:"6177e37ff02f9aafe039cc3d") {
+# title
+#   creator{
+#     email
+#   	}
+# 	}
+# }
+
+
+
+# query{
+#   bookings{
+#   _id
+#   createdAt
+#   event {
+#      _id
+#     title
+#     }
+#   user{
+#     _id
+#     email
+#     password
+#     }
+#   }
+# }
+
+
+
+# query{
+#   login(email:"ali@gmail.com", password:"123456"){
+#     userId 
+#     token 
+#     tokenExpiration
+# }
+# }
+
