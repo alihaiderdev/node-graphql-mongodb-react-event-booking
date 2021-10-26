@@ -4,10 +4,13 @@ const graphqlHttp = require('express-graphql');
 const mongoose = require('mongoose');
 const graphQlSchema = require('./graphql/schema');
 const graphQlResolvers = require('./graphql/resolvers');
+const isAuth = require('./middlerware/is-auth');
 const app = express();
 const PORT = 8080;
 
 app.use(bodyParser.json());
+
+app.use(isAuth);
 
 app.use(
   '/graphql',
